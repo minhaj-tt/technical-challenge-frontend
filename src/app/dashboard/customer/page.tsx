@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -19,7 +20,6 @@ import axios from "axios";
 
 const CustomerDashboard = () => {
   //   const { user, isAuthenticated } = useAuth();
-  const router = useRouter();
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

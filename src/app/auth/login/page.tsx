@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
@@ -63,7 +64,12 @@ const Login: React.FC = () => {
     Cookies.set("cookiesAccepted", "true", { expires: 365 });
     setOpenModal(false);
     toast.success("Cookies accepted!");
-    router.push("/dashboard/admin");
+    console.log('userData', userData)
+    {
+      userData.role === 'customer' ? router.push("/dashboard/customer") : userData?.role === 'merchant' ? router.push("/dashboard/merchant") :
+        router.push("/dashboard/admin");
+    }
+
   };
 
   const handleDeclineCookies = () => {
