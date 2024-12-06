@@ -12,6 +12,8 @@ import {
   Modal,
   TextField,
   Button,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DummyAvatar from "../app/assets/images/avatar.png";
@@ -43,6 +45,9 @@ const StylishCard: React.FC<StylishCardProps> = ({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -119,7 +124,7 @@ const StylishCard: React.FC<StylishCardProps> = ({
       <Card
         variant="outlined"
         sx={{
-          width: 350,
+          width: isMobile ? "100%" : 350,
           borderRadius: 4,
           boxShadow: 10,
           backgroundColor: "#f5f5f5",
@@ -139,15 +144,15 @@ const StylishCard: React.FC<StylishCardProps> = ({
         <Image
           src={role !== undefined ? DummyAvatar : DummyShop}
           alt={`${first_name} ${last_name}`}
-          width={90}
-          height={90}
+          width={isMobile ? 70 : 90}
+          height={isMobile ? 70 : 90}
           style={{
-            margin: '0 auto',
-            marginBottom: '2px',
-            boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
-            border: '3px solid #1976d2',
-            backgroundColor: '#1976d2',
-            borderRadius: '50%',
+            margin: "0 auto",
+            marginBottom: "2px",
+            boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+            border: "3px solid #1976d2",
+            backgroundColor: "#1976d2",
+            borderRadius: "50%",
           }}
         />
         <CardContent>
@@ -236,7 +241,7 @@ const StylishCard: React.FC<StylishCardProps> = ({
             boxShadow: 24,
             p: 4,
             borderRadius: 2,
-            width: 400,
+            width: isMobile ? "90%" : 400,
             border: "2px solid #1976d2",
           }}
         >

@@ -9,6 +9,8 @@ import {
   CircularProgress,
   Snackbar,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -35,6 +37,9 @@ const AdminDashboard: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"users" | "merchants">("users");
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     fetchData();
@@ -114,6 +119,8 @@ const AdminDashboard: React.FC = () => {
             gap: 2,
             overflow: "hidden",
             backgroundColor: "white",
+            zIndex: 10,
+            display: isMobile ? "none" : "flex",
           }}
         >
           <Typography
@@ -184,7 +191,8 @@ const AdminDashboard: React.FC = () => {
         <Box
           sx={{
             width: { xs: "100%", md: "80%" },
-            ml: { md: "25%" },
+            ml: { md: "20%" },
+            px: 3,
           }}
         >
           {loading ? (
@@ -226,9 +234,9 @@ const AdminDashboard: React.FC = () => {
                       </Typography>
                     </Box>
 
-                    <Stack direction="row" flexWrap="wrap">
+                    <Stack direction="row" flexWrap="wrap" spacing={3}>
                       {users.map((user) => (
-                        <Box key={user.id}>
+                        <Box key={user.id} sx={{ width: { xs: "100%", sm: "48%", md: "30%" } }}>
                           <PrimaryCard
                             id={user.id}
                             first_name={user.first_name}
@@ -267,9 +275,9 @@ const AdminDashboard: React.FC = () => {
                     </Typography>
                   </Box>
 
-                  <Stack direction="row" flexWrap="wrap">
+                  <Stack direction="row" flexWrap="wrap" spacing={3}>
                     {stores.map((store) => (
-                      <Box key={store.id}>
+                      <Box key={store.id} sx={{ width: { xs: "100%", sm: "48%", md: "30%" } }}>
                         <PrimaryCard
                           id={store.id}
                           last_name={undefined}
