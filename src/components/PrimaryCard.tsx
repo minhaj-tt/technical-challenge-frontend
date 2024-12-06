@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import axios from "axios";
@@ -6,7 +7,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Avatar,
   Typography,
   IconButton,
   Modal,
@@ -14,7 +14,9 @@ import {
   Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import DummyAvatar from "../app/assets/images/images.jpeg";
+import DummyAvatar from "../app/assets/images/avatar.png";
+import DummyShop from "../app/assets/images/shop.png";
+import Image from "next/image";
 
 interface StylishCardProps {
   id: string;
@@ -24,7 +26,13 @@ interface StylishCardProps {
   description?: string;
 }
 
-const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, role, description }) => {
+const StylishCard: React.FC<StylishCardProps> = ({
+  id,
+  first_name,
+  last_name,
+  role,
+  description,
+}) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     firstName: first_name || "",
@@ -55,32 +63,44 @@ const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, ro
     setError("");
 
     try {
-      const apiUrl = role !== undefined
-        ? `${process.env.NEXT_PUBLIC_API_URL}/api/admin/users/${id}`
-        : `${process.env.NEXT_PUBLIC_API_URL}/api/admin/stores/${id}`;
-
-      const payload = role !== undefined
-        ? {
+      if (role !== undefined) {
+        const updatedUserData = {
           firstName: formData.firstName,
           lastName: formData.lastName,
           role: formData.role,
-        }
-        : {
+        };
+
+        setFormData({
+          firstName: updatedUserData.firstName,
+          lastName: updatedUserData.lastName,
+          role: updatedUserData.role,
+          storeDescription: formData.storeDescription,
+          storeName: formData.storeName,
+        });
+
+        console.log("User updated locally", updatedUserData);
+      } else {
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/admin/stores/${id}`;
+        const payload = {
           name: formData.storeName,
           description: formData.storeDescription,
         };
 
-      const response = await axios.patch(apiUrl, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+        const response = await axios.patch(apiUrl, payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      console.log(role !== undefined ? "User updated successfully" : "Store updated successfully", response.data);
+        console.log("Store updated successfully", response.data);
+      }
+
       handleClose();
     } catch (err: any) {
       setError(
-        err.response?.data?.message || err.message || "An error occurred while updating details."
+        err.response?.data?.message ||
+        err.message ||
+        "An error occurred while updating details."
       );
     } finally {
       setLoading(false);
@@ -102,27 +122,32 @@ const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, ro
           width: 350,
           borderRadius: 4,
           boxShadow: 10,
-          backgroundColor: "#ffffff",
-          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease",
+          backgroundColor: "#f5f5f5",
+          transition:
+            "transform 0.3s ease-in-out, box-shadow 0.3s ease, background-color 0.3s ease",
           "&:hover": {
             transform: "translateY(-10px)",
             boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.15)",
+            backgroundColor: "#e3f2fd",
           },
           textAlign: "center",
           padding: 3,
+          border: "1px solid #1976d2",
           background: "#f9f9f9",
         }}
       >
-        <Avatar
+        <Image
+          src={role !== undefined ? DummyAvatar : DummyShop}
           alt={`${first_name} ${last_name}`}
-          src={DummyAvatar}
-          sx={{
-            width: 80,
-            height: 80,
-            margin: "0 auto",
-            marginBottom: 2,
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-            border: "3px solid #1976d2",
+          width={90}
+          height={90}
+          style={{
+            margin: '0 auto',
+            marginBottom: '2px',
+            boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
+            border: '3px solid #1976d2',
+            backgroundColor: '#1976d2',
+            borderRadius: '50%',
           }}
         />
         <CardContent>
@@ -131,9 +156,10 @@ const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, ro
             component="div"
             sx={{
               fontWeight: "bold",
-              color: "#333",
+              color: "#1976d2",
               textTransform: "capitalize",
               marginBottom: 1,
+              letterSpacing: 1,
             }}
           >
             {first_name} {last_name}
@@ -142,7 +168,7 @@ const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, ro
             <Typography
               variant="body2"
               sx={{
-                color: "text.secondary",
+                color: "#1976d2",
                 fontSize: 14,
                 fontStyle: "italic",
                 marginBottom: 1,
@@ -160,6 +186,7 @@ const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, ro
               lineHeight: 1.5,
               fontWeight: "light",
               textAlign: "justify",
+              marginTop: 1,
             }}
           >
             {description
@@ -182,6 +209,8 @@ const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, ro
               "&:hover": {
                 backgroundColor: "#1565c0",
               },
+              borderRadius: "50%",
+              padding: 1,
             }}
             aria-label="edit"
             onClick={handleOpen}
@@ -191,7 +220,6 @@ const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, ro
         </CardActions>
       </Card>
 
-      {/* Edit Modal */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -212,7 +240,11 @@ const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, ro
             border: "2px solid #1976d2",
           }}
         >
-          <Typography variant="h6" component="h2" sx={{ mb: 2, color: "#1976d2" }}>
+          <Typography
+            variant="h6"
+            component="h2"
+            sx={{ mb: 2, color: "#1976d2" }}
+          >
             {role !== undefined ? "Edit User Details" : "Edit Store Details"}
           </Typography>
           {role !== undefined ? (
@@ -289,6 +321,6 @@ const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, ro
       </Modal>
     </Box>
   );
-}
+};
 
 export default StylishCard;
