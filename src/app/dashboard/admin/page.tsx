@@ -8,6 +8,7 @@ import {
   Button,
   CircularProgress,
   Snackbar,
+  Typography,
 } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -115,6 +116,19 @@ const AdminDashboard: React.FC = () => {
             backgroundColor: "white",
           }}
         >
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{
+              fontWeight: "bold",
+              color: "#1976d2",
+              mb: 3,
+              textAlign: "center",
+            }}
+          >
+            Admin Dashboard
+          </Typography>
+
           <Button
             variant={activeTab === "users" ? "contained" : "outlined"}
             color="primary"
@@ -187,30 +201,87 @@ const AdminDashboard: React.FC = () => {
             </Box>
           ) : (
             <Stack direction="row" flexWrap="wrap">
-              {activeTab === "users" &&
-                users.map((user) => (
-                  <Box key={user.id}>
-                    <PrimaryCard
-                      id={user.id}
-                      first_name={user.first_name}
-                      last_name={user.last_name}
-                      role={user.role}
-                      description={undefined}
-                    />
+              <>
+                {activeTab === "users" && (
+                  <>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        margin: "0 auto",
+                      }}
+                    >
+                      <Typography
+                        variant="h3"
+                        textAlign={"center"}
+                        sx={{
+                          fontWeight: "bold",
+                          color: "#1976d2",
+                          mt: 3,
+                          mb: 3,
+                        }}
+                      >
+                        Users
+                      </Typography>
+                    </Box>
+
+                    <Stack direction="row" flexWrap="wrap">
+                      {users.map((user) => (
+                        <Box key={user.id}>
+                          <PrimaryCard
+                            id={user.id}
+                            first_name={user.first_name}
+                            last_name={user.last_name}
+                            role={user.role}
+                            description={undefined}
+                          />
+                        </Box>
+                      ))}
+                    </Stack>
+                  </>
+                )}
+              </>
+
+              {activeTab === "merchants" && (
+                <>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      margin: "0 auto",
+                    }}
+                  >
+                    <Typography
+                      variant="h3"
+                      textAlign={"center"}
+                      sx={{
+                        fontWeight: "bold",
+                        color: "#1976d2",
+                        mt: 3,
+                        mb: 3,
+                      }}
+                    >
+                      Stores
+                    </Typography>
                   </Box>
-                ))}
-              {activeTab === "merchants" &&
-                stores.map((store) => (
-                  <Box key={store.id}>
-                    <PrimaryCard
-                      id={store.id}
-                      last_name={undefined}
-                      first_name={store.name}
-                      description={store.description}
-                      role={undefined}
-                    />
-                  </Box>
-                ))}
+
+                  <Stack direction="row" flexWrap="wrap">
+                    {stores.map((store) => (
+                      <Box key={store.id}>
+                        <PrimaryCard
+                          id={store.id}
+                          last_name={undefined}
+                          first_name={store.name}
+                          description={store.description}
+                          role={undefined}
+                        />
+                      </Box>
+                    ))}
+                  </Stack>
+                </>
+              )}
             </Stack>
           )}
         </Box>

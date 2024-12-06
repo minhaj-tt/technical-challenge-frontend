@@ -100,6 +100,7 @@ const register: React.FC = () => {
         justifyContent: "center",
         padding: 4,
         margin: "auto",
+        minHeight: "100vh",
       }}
     >
       <Box

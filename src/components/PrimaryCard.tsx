@@ -185,7 +185,7 @@ const StylishCard: React.FC<StylishCardProps> = ({
               fontSize: 14,
               lineHeight: 1.5,
               fontWeight: "light",
-              textAlign: "justify",
+              textAlign: "center",
               marginTop: 1,
             }}
           >
