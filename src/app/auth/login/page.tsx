@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
 
@@ -18,23 +19,31 @@ import {
   Typography,
 } from "@mui/material";
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
+interface UserData {
+  role: "customer" | "merchant" | "admin";
+  [key: string]: any;
+}
+
 const Login: React.FC = () => {
-  const [formData, setFormData] = useState<{ email: string; password: string }>(
-    {
-      email: "",
-      password: "",
-    }
-  );
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+    password: "",
+  });
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [userData, setUserData] = useState<string>('');
+  const [userData, setUserData] = useState<UserData | null>(null);
   const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -47,10 +56,10 @@ const Login: React.FC = () => {
       );
 
       const authToken = response.data.token;
-      const userData = response.data.user;
-      setUserData(userData);
+      const user: UserData = response.data.user;
+      setUserData(user);
       localStorage.setItem("authToken", authToken);
-      localStorage.setItem("userData", JSON.stringify(userData));
+      localStorage.setItem("userData", JSON.stringify(user));
       toast.success("Logged in successfully!");
       setOpenModal(true);
     } catch (error) {
@@ -60,16 +69,26 @@ const Login: React.FC = () => {
   };
 
   const handleAcceptCookies = () => {
-    Cookies.set("userData", JSON.stringify(userData), { expires: 1 });
-    Cookies.set("cookiesAccepted", "true", { expires: 365 });
-    setOpenModal(false);
-    toast.success("Cookies accepted!");
-    console.log('userData', userData)
-    {
-      userData.role === 'customer' ? router.push("/dashboard/customer") : userData?.role === 'merchant' ? router.push("/dashboard/merchant") :
-        router.push("/dashboard/admin");
-    }
+    if (userData) {
+      Cookies.set("userData", JSON.stringify(userData), { expires: 1 });
+      Cookies.set("cookiesAccepted", "true", { expires: 365 });
+      setOpenModal(false);
+      toast.success("Cookies accepted!");
 
+      switch (userData.role) {
+        case "customer":
+          router.push("/dashboard/customer");
+          break;
+        case "merchant":
+          router.push("/dashboard/merchant");
+          break;
+        case "admin":
+          router.push("/dashboard/admin");
+          break;
+        default:
+          router.push("/");
+      }
+    }
   };
 
   const handleDeclineCookies = () => {
