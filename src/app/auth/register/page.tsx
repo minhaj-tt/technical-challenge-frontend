@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
@@ -16,7 +18,6 @@ import {
   SelectChangeEvent,
   InputLabel,
 } from "@mui/material";
-// import SubscriptionCards from "@/components/SubscriptionCard"; // Assuming your component is here
 
 interface formData {
   first_name: string;
@@ -35,13 +36,8 @@ const register: React.FC = () => {
     role: "",
   });
 
-  //   const [imagePreview, setImagePreview] = useState<string>(
-  //     "https://www.w3schools.com/w3images/avatar2.png"
-  //   );
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSignupSuccess, setIsSignupSuccess] = useState(false);
-  const [userData, setUserData] = useState<any>(null); // Change this to a more specific type if possible
   const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +70,7 @@ const register: React.FC = () => {
     console.log("userData --- ", userData);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
         userData,
         {
@@ -85,9 +81,7 @@ const register: React.FC = () => {
         }
       );
 
-      console.log("--res ---- ", response.data);
       router.push("/auth/login");
-      setUserData(response.data.user);
       setIsSignupSuccess(true);
     } catch (error) {
       console.error("Error registering user:", error);
@@ -96,21 +90,6 @@ const register: React.FC = () => {
       setIsSubmitting(false);
     }
   };
-
-  //   const handleSubscriptionSelect = async (subscriptionType: string) => {
-  //     const userId = userData.id;
-  //     try {
-  //       const response = await axios.post(
-  //         "http://localhost:3000/api/auth/create-checkout-session",
-  //         { userId, subscriptionType }
-  //       );
-
-  //       window.location.href = response.data.url;
-  //     } catch (error) {
-  //       console.error("Error creating Stripe session:", error);
-  //       toast.error("Failed to initiate payment.");
-  //     }
-  //   };
 
   return (
     <Box
@@ -170,7 +149,6 @@ const register: React.FC = () => {
               <MenuItem value="" disabled>
                 Choose a role
               </MenuItem>
-              <MenuItem value="admin">Admin</MenuItem>
               <MenuItem value="merchant">Merchant</MenuItem>
               <MenuItem value="customer">Customer</MenuItem>
             </Select>
