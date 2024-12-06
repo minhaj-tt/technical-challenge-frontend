@@ -16,7 +16,15 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DummyAvatar from "../app/assets/images/images.jpeg";
 
-export default function StylishCard({ id, first_name, last_name, role, description }) {
+interface StylishCardProps {
+  id: string;
+  first_name: string;
+  last_name: string;
+  role?: string;
+  description?: string;
+}
+
+const StylishCard: React.FC<StylishCardProps> = ({ id, first_name, last_name, role, description }) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     firstName: first_name || "",
@@ -34,7 +42,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
     setError("");
   };
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -58,7 +66,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
           role: formData.role,
         }
         : {
-          name: formData.storeName, // Changed to storeName for store
+          name: formData.storeName,
           description: formData.storeDescription,
         };
 
@@ -70,7 +78,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
 
       console.log(role !== undefined ? "User updated successfully" : "Store updated successfully", response.data);
       handleClose();
-    } catch (err) {
+    } catch (err: any) {
       setError(
         err.response?.data?.message || err.message || "An error occurred while updating details."
       );
@@ -102,6 +110,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
           },
           textAlign: "center",
           padding: 3,
+          background: "#f9f9f9",
         }}
       >
         <Avatar
@@ -113,6 +122,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
             margin: "0 auto",
             marginBottom: 2,
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+            border: "3px solid #1976d2",
           }}
         />
         <CardContent>
@@ -128,7 +138,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
           >
             {first_name} {last_name}
           </Typography>
-          {role !== undefined && (
+          {role && (
             <Typography
               variant="body2"
               sx={{
@@ -148,6 +158,8 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
               color: "#555",
               fontSize: 14,
               lineHeight: 1.5,
+              fontWeight: "light",
+              textAlign: "justify",
             }}
           >
             {description
@@ -197,9 +209,10 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
             p: 4,
             borderRadius: 2,
             width: 400,
+            border: "2px solid #1976d2",
           }}
         >
-          <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+          <Typography variant="h6" component="h2" sx={{ mb: 2, color: "#1976d2" }}>
             {role !== undefined ? "Edit User Details" : "Edit Store Details"}
           </Typography>
           {role !== undefined ? (
@@ -211,6 +224,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
                 onChange={handleChange}
                 fullWidth
                 sx={{ mb: 2 }}
+                color="primary"
               />
               <TextField
                 label="Last Name"
@@ -219,6 +233,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
                 onChange={handleChange}
                 fullWidth
                 sx={{ mb: 2 }}
+                color="primary"
               />
               <TextField
                 label="Role"
@@ -227,6 +242,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
                 onChange={handleChange}
                 fullWidth
                 sx={{ mb: 2 }}
+                color="primary"
               />
             </>
           ) : (
@@ -238,6 +254,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
                 onChange={handleChange}
                 fullWidth
                 sx={{ mb: 2 }}
+                color="primary"
               />
               <TextField
                 label="Description"
@@ -246,6 +263,7 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
                 onChange={handleChange}
                 fullWidth
                 sx={{ mb: 2 }}
+                color="primary"
               />
             </>
           )}
@@ -272,3 +290,5 @@ export default function StylishCard({ id, first_name, last_name, role, descripti
     </Box>
   );
 }
+
+export default StylishCard;
