@@ -209,7 +209,7 @@ const AdminDashboard: React.FC = () => {
                             boxShadow: activeTab === "users" ? 3 : 1,
                         }}
                     >
-                        Manage Users
+                        Add New Stores
                     </Button>
                     <Button
                         variant={activeTab === "merchants" ? "contained" : "outlined"}
@@ -248,7 +248,6 @@ const AdminDashboard: React.FC = () => {
                     </Box>
                 </Box>
 
-                {/* Content Area */}
                 <Box
                     sx={{
                         width: { xs: "100%", md: "80%" },
@@ -273,9 +272,9 @@ const AdminDashboard: React.FC = () => {
                                 {activeTab === "users" && (
                                     <Grid
                                         container
-                                        justifyContent="center" // Centers horizontally
-                                        alignItems="center" // Centers vertically
-                                        sx={{ minHeight: "100vh" }} // Ensures the grid takes the full height of the viewport
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        sx={{ minHeight: "100vh" }}
                                     >
                                         <Grid item xs={12} md={6}>
                                             <Box
@@ -314,7 +313,9 @@ const AdminDashboard: React.FC = () => {
                                                     rows={4}
                                                     sx={{ mb: 2 }}
                                                 />
-                                                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                                <Box
+                                                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                                                >
                                                     <Box mt={2}>
                                                         <Button
                                                             variant="contained"
@@ -339,7 +340,6 @@ const AdminDashboard: React.FC = () => {
                                                         </Button>
                                                     </Box>
                                                 </Box>
-
                                             </Box>
                                         </Grid>
                                     </Grid>

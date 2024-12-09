@@ -18,6 +18,7 @@ import {
   SelectChangeEvent,
   InputLabel,
 } from "@mui/material";
+// import protobuf from "protobufjs";
 
 interface formData {
   first_name: string;
@@ -56,9 +57,22 @@ const register: React.FC = () => {
     });
   };
 
+  // Function to load protobuf schema
+  // const loadProto = async () => {
+  //   const root = await protobuf.load("path/to/login.proto"); // Provide the path to your .proto file
+  //   const LoginRequest = root.lookupType("auth.LoginRequest");
+  //   return LoginRequest;
+  // };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    // Load the protobuf schema
+    // const LoginRequest = await loadProto();
+
+    // Create the protobuf message
+    // const message = LoginRequest.create({
     const userData = {
       first_name: formData.first_name,
       last_name: formData.last_name,
@@ -67,9 +81,20 @@ const register: React.FC = () => {
       role: formData.role,
     };
 
-    console.log("userData --- ", userData);
+    // Encode the message into a binary format
+    // const encodedMessage = LoginRequest.encode(message).finish();
 
     try {
+      // await axios.post(
+      //   `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
+      //   encodedMessage,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/x-protobuf",
+      //     },
+      //     withCredentials: true,
+      //   }
+      // );
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
         userData,
